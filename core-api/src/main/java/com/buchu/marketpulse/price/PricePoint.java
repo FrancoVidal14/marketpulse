@@ -27,9 +27,11 @@ public class PricePoint {
     @Column(nullable = false, precision = 18, scale = 8)
     private BigDecimal price;
 
-    private BigDecimal volume_24h;
+    @Column(name = "volume_24h")
+    private BigDecimal volume24h;
 
-    private BigDecimal change_24hPct;
+    @Column(name = "change_24h_pct")
+    private BigDecimal change24hPct;
 
     @Column(nullable = false)
     private Instant ts;
