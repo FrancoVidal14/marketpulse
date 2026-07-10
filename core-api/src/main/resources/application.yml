@@ -22,3 +22,7 @@ management:
     web:
       exposure:
         include: health, info, prometheus
+
+jwt:
+  secret: D)Z1Z2sHF^%Uda(l;tq}nmdHWenq83w=)d
+  expiration-ms: 3600000
