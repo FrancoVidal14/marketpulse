@@ -25,4 +25,5 @@ management:
 
 jwt:
   secret: D)Z1Z2sHF^%Uda(l;tq}nmdHWenq83w=)d
-  expiration-ms: 3600000
+  expiration-ms: 3600000          # access: 1 hora
+  refresh-expiration-ms: 604800000  # refresh: 7 días

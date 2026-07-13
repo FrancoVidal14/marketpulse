@@ -16,27 +16,47 @@ public class JwtService {
 
     private final SecretKey key;
     private final long expirationMs;
+    private final long refreshExpirationMs;
 
     public JwtService(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expiration-ms}") long expirationMs) {
+            @Value("${jwt.expiration-ms}") long expirationMs,
+            @Value("${jwt.refresh-expiration-ms}") long refreshExpirationMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationMs = expirationMs;
+        this.refreshExpirationMs = refreshExpirationMs;
     }
 
-    public String generateToken(String email) {
+    public String generateAccessToken(String email) {
+        return buildToken(email, "access", expirationMs);
+    }
+
+    public String generateRefreshToken(String email) {
+        return buildToken(email, "refresh", refreshExpirationMs);
+    }
+
+    private String buildToken(String email, String type, long ttlMs) {
         Date now = new Date();
-        Date expiry = new Date(now.getTime() + expirationMs);
         return Jwts.builder()
                 .subject(email)
+                .claim("type", type)
                 .issuedAt(now)
-                .expiration(expiry)
+                .expiration(new Date(now.getTime() + ttlMs))
                 .signWith(key)
                 .compact();
     }
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public boolean isRefreshToken(String token) {
+        try {
+            String type = extractClaim(token, claims -> claims.get("type", String.class));
+            return "refresh".equals(type);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean isTokenValid(String token) {
@@ -56,4 +76,8 @@ public class JwtService {
                 .getPayload();
         return resolver.apply(claims);
     }
+
+
+
+
 }
