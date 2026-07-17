@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: ingestor-service
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+server:
+  port: 8081
+
+ingestor:
+  coingecko:
+    base-url: https://api.coingecko.com/api/v3
+    ids: bitcoin,ethereum,solana,dogecoin,polkadot,chainlink,cardano,ripple
+  interval-ms: 30000
