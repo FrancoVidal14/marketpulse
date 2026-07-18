@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface InstrumentRepository extends JpaRepository<Instrument, Long> {
     Optional<Instrument> findBySymbol(String symbol);
+    Optional<Instrument> findByCoingeckoId(String coingeckoId);
 }

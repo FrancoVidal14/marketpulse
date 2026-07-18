@@ -8,4 +8,5 @@ import java.util.List;
 public interface PriceAlertRepository extends JpaRepository<PriceAlert, Long> {
     List<PriceAlert> findByUserId(Long userId);
     Optional<PriceAlert> findByIdAndUserId(Long id, Long userId);
+    List<PriceAlert> findByInstrumentIdAndStatus(Long instrumentId, AlertStatus status);
 }
